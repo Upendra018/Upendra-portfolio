@@ -12,9 +12,9 @@ export default function Navbar({ active }) {
     setOpen(false);
   };
 
-  // Close menu when clicking outside
+  /* Close when clicking outside */
   useEffect(() => {
-    const handleOutsideClick = (event) => {
+    const handleClickOutside = (event) => {
       if (
         open &&
         !event.target.closest(".navbar") &&
@@ -24,19 +24,34 @@ export default function Navbar({ active }) {
       }
     };
 
-    document.addEventListener("click", handleOutsideClick);
+    document.addEventListener("click", handleClickOutside);
 
     return () => {
-      document.removeEventListener("click", handleOutsideClick);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, [open]);
+
+  /* Close menu when screen becomes desktop */
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
       <style>{`
 
         /* =====================================================
-           NAVBAR
+           MAIN NAVBAR
         ===================================================== */
 
         nav {
@@ -46,18 +61,27 @@ export default function Navbar({ active }) {
 
           background: rgba(7, 12, 22, 0.94);
 
-          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
           backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+
+          box-sizing: border-box;
         }
+
+
+        /* =====================================================
+           NAVBAR CONTAINER
+        ===================================================== */
 
         .wrap.navbar {
           width: 100%;
           max-width: 1200px;
 
-          height: 68px;
+          height: 64px;
 
           margin: 0 auto;
+
           padding: 0 24px;
 
           box-sizing: border-box;
@@ -65,6 +89,8 @@ export default function Navbar({ active }) {
           display: flex;
           align-items: center;
           justify-content: space-between;
+
+          gap: 20px;
         }
 
 
@@ -73,33 +99,41 @@ export default function Navbar({ active }) {
         ===================================================== */
 
         .brand {
+          display: flex;
+          align-items: center;
+
           flex-shrink: 0;
         }
 
         .brand-name {
           color: #ffffff;
 
-          font-size: 17px;
+          font-size: 16px;
           font-weight: 700;
 
-          letter-spacing: 0.2px;
+          line-height: 1;
+
+          letter-spacing: 0.1px;
 
           white-space: nowrap;
+
+          user-select: none;
         }
 
 
         /* =====================================================
-           NAV LINKS
+           DESKTOP NAVIGATION
         ===================================================== */
 
         .navlinks {
           display: flex;
+
           align-items: center;
 
-          gap: 28px;
+          gap: 26px;
 
           margin-left: auto;
-          margin-right: 22px;
+          margin-right: 20px;
         }
 
         .navlinks a {
@@ -109,8 +143,10 @@ export default function Navbar({ active }) {
 
           text-decoration: none;
 
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 500;
+
+          line-height: 1;
 
           white-space: nowrap;
 
@@ -137,7 +173,7 @@ export default function Navbar({ active }) {
 
           height: 2px;
 
-          border-radius: 10px;
+          border-radius: 20px;
 
           background: linear-gradient(
             90deg,
@@ -157,27 +193,33 @@ export default function Navbar({ active }) {
           align-items: center;
           justify-content: center;
 
-          height: 38px;
+          height: 34px;
 
-          padding: 0 16px;
+          min-width: 90px;
 
-          border: 1px solid rgba(240, 180, 76, 0.4);
+          padding: 0 14px;
 
-          border-radius: 7px;
+          box-sizing: border-box;
+
+          border: 1px solid rgba(240, 180, 76, 0.35);
+
+          border-radius: 6px;
 
           color: #ffffff;
 
-          background: rgba(240, 180, 76, 0.08);
+          background: rgba(240, 180, 76, 0.07);
 
           text-decoration: none;
 
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 600;
 
+          white-space: nowrap;
+
           transition:
-            transform 0.2s ease,
+            background 0.2s ease,
             border-color 0.2s ease,
-            background 0.2s ease;
+            transform 0.2s ease;
         }
 
         .nav-cta:hover {
@@ -185,7 +227,7 @@ export default function Navbar({ active }) {
 
           border-color: #f0b44c;
 
-          background: rgba(240, 180, 76, 0.15);
+          background: rgba(240, 180, 76, 0.14);
         }
 
         .nav-cta-mobile {
@@ -200,27 +242,29 @@ export default function Navbar({ active }) {
         .nav-toggle {
           display: none;
 
-          width: 40px;
-          height: 40px;
+          width: 34px;
+          height: 34px;
 
           padding: 0;
 
-          border: 1px solid rgba(255, 255, 255, 0.12);
-
-          border-radius: 7px;
-
-          background: rgba(255, 255, 255, 0.03);
-
-          cursor: pointer;
+          flex-shrink: 0;
 
           align-items: center;
           justify-content: center;
 
           flex-direction: column;
 
-          gap: 5px;
+          gap: 4px;
 
-          flex-shrink: 0;
+          border: 1px solid rgba(255, 255, 255, 0.10);
+
+          border-radius: 6px;
+
+          background: rgba(255, 255, 255, 0.025);
+
+          cursor: pointer;
+
+          box-sizing: border-box;
 
           transition:
             background 0.2s ease,
@@ -228,24 +272,24 @@ export default function Navbar({ active }) {
         }
 
         .nav-toggle:hover {
-          background: rgba(255, 255, 255, 0.07);
+          background: rgba(255, 255, 255, 0.06);
 
-          border-color: rgba(255, 255, 255, 0.2);
+          border-color: rgba(255, 255, 255, 0.18);
         }
 
         .nav-toggle span {
+          width: 16px;
+          height: 1.5px;
+
           display: block;
 
-          width: 19px;
-          height: 2px;
-
-          border-radius: 5px;
+          border-radius: 10px;
 
           background: #ffffff;
 
           transition:
-            transform 0.25s ease,
-            opacity 0.2s ease;
+            transform 0.22s ease,
+            opacity 0.18s ease;
         }
 
 
@@ -266,7 +310,7 @@ export default function Navbar({ active }) {
         ===================================================== */
 
         .nav-toggle.open span:nth-child(1) {
-          transform: translateY(7px) rotate(45deg);
+          transform: translateY(5.5px) rotate(45deg);
         }
 
         .nav-toggle.open span:nth-child(2) {
@@ -275,7 +319,7 @@ export default function Navbar({ active }) {
         }
 
         .nav-toggle.open span:nth-child(3) {
-          transform: translateY(-7px) rotate(-45deg);
+          transform: translateY(-5.5px) rotate(-45deg);
         }
 
 
@@ -286,19 +330,34 @@ export default function Navbar({ active }) {
         @media (max-width: 900px) {
 
           .wrap.navbar {
-            padding: 0 20px;
+            height: 60px;
+
+            padding-left: 18px;
+            padding-right: 18px;
+          }
+
+          .brand-name {
+            font-size: 15px;
           }
 
           .navlinks {
-            gap: 20px;
+            gap: 18px;
+
+            margin-right: 14px;
           }
 
           .navlinks a {
-            font-size: 13px;
+            font-size: 12px;
           }
 
           .nav-cta {
-            padding: 0 14px;
+            min-width: 82px;
+
+            height: 32px;
+
+            padding: 0 11px;
+
+            font-size: 11px;
           }
         }
 
@@ -309,40 +368,64 @@ export default function Navbar({ active }) {
 
         @media (max-width: 768px) {
 
+          nav {
+            width: 100%;
+          }
+
+
+          /* Small navbar */
+
           .wrap.navbar {
             width: 100%;
 
-            max-width: 100%;
+            max-width: none;
 
-            height: 62px;
+            height: 54px;
 
-            padding: 0 16px;
+            padding: 0 12px;
+
+            gap: 10px;
           }
 
 
-          /* BRAND */
+          /* Small brand */
 
           .brand-name {
-            font-size: 16px;
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 0;
+
+            line-height: 1;
           }
 
 
-          /* HAMBURGER */
+          /* Show hamburger */
 
           .nav-toggle {
             display: flex;
 
-            z-index: 1002;
+            width: 32px;
+            height: 32px;
+          }
+
+          .nav-toggle span {
+            width: 15px;
+
+            height: 1.5px;
           }
 
 
-          /* MOBILE NAV MENU */
+          /* =================================================
+             MOBILE MENU
+          ================================================= */
 
           .navlinks {
 
             position: absolute;
 
-            top: 62px;
+            top: 54px;
 
             left: 0;
             right: 0;
@@ -351,7 +434,7 @@ export default function Navbar({ active }) {
 
             margin: 0;
 
-            padding: 10px 16px 16px;
+            padding: 8px 12px 12px;
 
             box-sizing: border-box;
 
@@ -361,31 +444,33 @@ export default function Navbar({ active }) {
 
             align-items: stretch;
 
-            gap: 3px;
+            gap: 2px;
 
             background: rgba(7, 12, 22, 0.98);
 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 
 
-            /* CLOSED */
+            /* Closed */
 
             opacity: 0;
 
             visibility: hidden;
 
-            transform: translateY(-8px);
-
             pointer-events: none;
 
+            transform: translateY(-5px);
+
             transition:
-              opacity 0.2s ease,
-              transform 0.2s ease,
-              visibility 0.2s ease;
+              opacity 0.18s ease,
+              transform 0.18s ease,
+              visibility 0.18s ease;
           }
 
 
-          /* OPEN */
+          /* Open */
 
           .navlinks.open {
 
@@ -393,33 +478,37 @@ export default function Navbar({ active }) {
 
             visibility: visible;
 
-            transform: translateY(0);
-
             pointer-events: auto;
+
+            transform: translateY(0);
           }
 
 
-          /* MOBILE LINKS */
+          /* =================================================
+             MOBILE LINKS
+          ================================================= */
 
           .navlinks a {
 
             width: 100%;
 
+            padding: 10px 11px;
+
             box-sizing: border-box;
 
-            padding: 12px;
+            border-radius: 5px;
 
-            border-radius: 6px;
+            font-size: 13px;
 
-            font-size: 14px;
+            line-height: 1.2;
           }
 
           .navlinks a:hover {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
           }
 
           .navlinks a.active {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.035);
           }
 
           .navlinks a.active::after {
@@ -427,7 +516,9 @@ export default function Navbar({ active }) {
           }
 
 
-          /* MOBILE GET IN TOUCH */
+          /* =================================================
+             MOBILE GET IN TOUCH
+          ================================================= */
 
           .nav-cta-mobile {
 
@@ -435,13 +526,15 @@ export default function Navbar({ active }) {
 
             width: 100%;
 
-            height: 40px;
+            height: 34px;
 
-            margin-top: 7px;
+            margin-top: 5px;
+
+            font-size: 12px;
           }
 
 
-          /* HIDE DESKTOP BUTTON */
+          /* Hide desktop button */
 
           .nav-cta-desktop {
             display: none;
@@ -450,31 +543,142 @@ export default function Navbar({ active }) {
 
 
         /* =====================================================
-           SMALL MOBILE
+           SMALL PHONE
+           Around 360px - 390px width
         ===================================================== */
 
         @media (max-width: 480px) {
 
           .wrap.navbar {
 
-            height: 58px;
+            height: 50px;
 
-            padding: 0 14px;
+            padding-left: 10px;
+            padding-right: 10px;
           }
 
           .brand-name {
-            font-size: 15px;
+            font-size: 12px;
           }
 
           .nav-toggle {
 
-            width: 38px;
-            height: 38px;
+            width: 30px;
+            height: 30px;
+
+            border-radius: 5px;
+          }
+
+          .nav-toggle span {
+            width: 14px;
+
+            height: 1.5px;
           }
 
           .navlinks {
+            top: 50px;
 
-            top: 58px;
+            padding: 7px 10px 10px;
+          }
+
+          .navlinks a {
+            padding: 9px 10px;
+
+            font-size: 12px;
+          }
+
+          .nav-cta-mobile {
+            height: 32px;
+
+            font-size: 11px;
+          }
+        }
+
+
+        /* =====================================================
+           VERY SMALL PHONE
+           Around 320px width
+        ===================================================== */
+
+        @media (max-width: 360px) {
+
+          .wrap.navbar {
+
+            height: 46px;
+
+            padding-left: 8px;
+            padding-right: 8px;
+
+            gap: 6px;
+          }
+
+          .brand-name {
+            font-size: 11px;
+          }
+
+          .nav-toggle {
+
+            width: 28px;
+            height: 28px;
+          }
+
+          .nav-toggle span {
+            width: 13px;
+          }
+
+          .navlinks {
+            top: 46px;
+
+            padding: 6px 8px 8px;
+          }
+
+          .navlinks a {
+            padding: 8px;
+
+            font-size: 11px;
+          }
+
+          .nav-cta-mobile {
+            height: 30px;
+
+            font-size: 10px;
+          }
+        }
+
+
+        /* =====================================================
+           EXTRA SMALL SCREEN
+           Around 280px width
+        ===================================================== */
+
+        @media (max-width: 300px) {
+
+          .wrap.navbar {
+
+            height: 42px;
+
+            padding-left: 7px;
+            padding-right: 7px;
+          }
+
+          .brand-name {
+            font-size: 10px;
+          }
+
+          .nav-toggle {
+
+            width: 26px;
+            height: 26px;
+          }
+
+          .nav-toggle span {
+            width: 12px;
+
+            height: 1px;
+          }
+
+          .navlinks {
+            top: 42px;
           }
         }
 
@@ -482,7 +686,7 @@ export default function Navbar({ active }) {
 
 
       {/* =====================================================
-          NAVBAR HTML
+          NAVBAR
       ===================================================== */}
 
       <nav>
@@ -490,7 +694,9 @@ export default function Navbar({ active }) {
         <div className="wrap navbar">
 
 
-          {/* BRAND */}
+          {/* ================================================
+              BRAND
+          ================================================= */}
 
           <div className="brand">
 
@@ -501,11 +707,15 @@ export default function Navbar({ active }) {
           </div>
 
 
-          {/* MOBILE HAMBURGER */}
+          {/* ================================================
+              MOBILE MENU BUTTON
+          ================================================= */}
 
           <button
             type="button"
-            className={`nav-toggle ${open ? "open" : ""}`}
+            className={`nav-toggle ${
+              open ? "open" : ""
+            }`}
             onClick={toggleMenu}
             aria-label={
               open
@@ -522,7 +732,9 @@ export default function Navbar({ active }) {
           </button>
 
 
-          {/* NAVIGATION */}
+          {/* ================================================
+              NAVIGATION LINKS
+          ================================================= */}
 
           <div
             className={`navlinks ${
@@ -548,7 +760,7 @@ export default function Navbar({ active }) {
             ))}
 
 
-            {/* MOBILE GET IN TOUCH */}
+            {/* Mobile Get In Touch */}
 
             <a
               href="#contact"
@@ -561,7 +773,9 @@ export default function Navbar({ active }) {
           </div>
 
 
-          {/* DESKTOP GET IN TOUCH */}
+          {/* ================================================
+              DESKTOP GET IN TOUCH
+          ================================================= */}
 
           <a
             href="#contact"
@@ -571,6 +785,11 @@ export default function Navbar({ active }) {
           </a>
 
         </div>
+
+      </nav>
+    </>
+  );
+}
 
       </nav>
     </>
