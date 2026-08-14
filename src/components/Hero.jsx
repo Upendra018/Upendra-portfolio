@@ -65,18 +65,15 @@ export default function Hero() {
 
         .hero {
           position: relative;
-
           width: 100%;
 
-          min-height: 100vh;
-          min-height: 100svh;
+          /* CHANGED: no forced full-screen height */
+          min-height: auto;
 
           overflow: hidden;
-
           isolation: isolate;
 
           background: #06090d;
-
           color: #f1f5f8;
         }
 
@@ -87,13 +84,9 @@ export default function Hero() {
 
         .developer-bg {
           position: absolute;
-
           inset: 0;
-
           z-index: -1;
-
           overflow: hidden;
-
           pointer-events: none;
         }
 
@@ -501,11 +494,8 @@ export default function Hero() {
           width:
             min(94%, 1400px);
 
-          min-height:
-            100vh;
-
-          min-height:
-            100svh;
+          /* CHANGED */
+          min-height: auto;
 
           margin:
             0 auto;
@@ -513,8 +503,9 @@ export default function Hero() {
           display:
             flex;
 
+          /* CHANGED */
           align-items:
-            center;
+            flex-start;
 
           justify-content:
             space-between;
@@ -522,8 +513,9 @@ export default function Hero() {
           gap:
             clamp(45px, 6vw, 110px);
 
+          /* CHANGED */
           padding:
-            70px 0;
+            50px 0;
         }
 
 
@@ -1085,7 +1077,7 @@ export default function Hero() {
               45px;
 
             padding:
-              60px 0;
+              45px 0;
           }
 
 
@@ -1249,8 +1241,9 @@ export default function Hero() {
             margin:
               0 auto;
 
+            /* CHANGED */
             padding:
-              80px 0 45px;
+              45px 0 30px;
 
             display:
               flex;
@@ -1264,8 +1257,9 @@ export default function Hero() {
             justify-content:
               flex-start;
 
+            /* CHANGED */
             gap:
-              50px;
+              25px;
           }
 
 
@@ -1525,11 +1519,13 @@ export default function Hero() {
             width:
               90%;
 
+            /* CHANGED */
             padding:
-              70px 0 35px;
+              40px 0 25px;
 
+            /* CHANGED */
             gap:
-              42px;
+              20px;
           }
 
 
@@ -1798,8 +1794,8 @@ export default function Hero() {
               <a
                 className="btn-outline"
                 href={`https://wa.me/${CONTACT.whatsapp.replace(
-                    /\D/g,
-                    ""
+                  /\D/g,
+                  ""
                 )}`}
               >
                 WhatsApp
