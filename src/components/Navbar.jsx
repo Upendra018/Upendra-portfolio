@@ -1,43 +1,76 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NAV_ITEMS } from "../data/content.js";
 
 export default function Navbar({ active }) {
   const [open, setOpen] = useState(false);
 
-  const closeMenu = () => setOpen(false);
+  const toggleMenu = () => {
+    setOpen((prev) => !prev);
+  };
+
+  const closeMenu = () => {
+    setOpen(false);
+  };
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        open &&
+        !event.target.closest(".navbar") &&
+        !event.target.closest(".navlinks")
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [open]);
 
   return (
     <>
       <style>{`
-        /* =========================
+
+        /* =====================================================
            NAVBAR
-        ========================= */
+        ===================================================== */
 
         nav {
           width: 100%;
           position: relative;
           z-index: 1000;
-          background: rgba(7, 12, 22, 0.96);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+          background: rgba(7, 12, 22, 0.94);
+
+          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+          backdrop-filter: blur(10px);
         }
 
         .wrap.navbar {
           width: 100%;
           max-width: 1200px;
-          height: 72px;
+
+          height: 68px;
+
           margin: 0 auto;
-          padding: 0 28px;
+          padding: 0 24px;
+
           box-sizing: border-box;
 
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 30px;
         }
 
-        /* =========================
+
+        /* =====================================================
            BRAND
-        ========================= */
+        ===================================================== */
 
         .brand {
           flex-shrink: 0;
@@ -45,32 +78,43 @@ export default function Navbar({ active }) {
 
         .brand-name {
           color: #ffffff;
-          font-size: 18px;
+
+          font-size: 17px;
           font-weight: 700;
-          letter-spacing: 0.3px;
+
+          letter-spacing: 0.2px;
+
           white-space: nowrap;
         }
 
-        /* =========================
+
+        /* =====================================================
            NAV LINKS
-        ========================= */
+        ===================================================== */
 
         .navlinks {
           display: flex;
           align-items: center;
-          justify-content: center;
-          gap: 30px;
+
+          gap: 28px;
+
           margin-left: auto;
+          margin-right: 22px;
         }
 
         .navlinks a {
           position: relative;
+
           color: #aeb6c7;
+
           text-decoration: none;
+
           font-size: 14px;
           font-weight: 500;
-          transition: color 0.25s ease;
+
           white-space: nowrap;
+
+          transition: color 0.2s ease;
         }
 
         .navlinks a:hover {
@@ -83,12 +127,18 @@ export default function Navbar({ active }) {
 
         .navlinks a.active::after {
           content: "";
+
           position: absolute;
+
           left: 0;
           right: 0;
+
           bottom: -8px;
+
           height: 2px;
+
           border-radius: 10px;
+
           background: linear-gradient(
             90deg,
             #f0b44c,
@@ -96,87 +146,124 @@ export default function Navbar({ active }) {
           );
         }
 
-        /* =========================
+
+        /* =====================================================
            GET IN TOUCH
-        ========================= */
+        ===================================================== */
 
         .nav-cta {
           display: inline-flex;
+
           align-items: center;
           justify-content: center;
 
-          min-width: 105px;
-          height: 40px;
-          padding: 0 18px;
+          height: 38px;
 
-          border: 1px solid rgba(240, 180, 76, 0.45);
-          border-radius: 8px;
+          padding: 0 16px;
+
+          border: 1px solid rgba(240, 180, 76, 0.4);
+
+          border-radius: 7px;
 
           color: #ffffff;
-          background: linear-gradient(
-            135deg,
-            rgba(240, 180, 76, 0.15),
-            rgba(108, 159, 245, 0.12)
-          );
+
+          background: rgba(240, 180, 76, 0.08);
 
           text-decoration: none;
+
           font-size: 13px;
           font-weight: 600;
 
           transition:
-            transform 0.25s ease,
-            border-color 0.25s ease,
-            background 0.25s ease;
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            background 0.2s ease;
         }
 
         .nav-cta:hover {
-          transform: translateY(-2px);
+          transform: translateY(-1px);
+
           border-color: #f0b44c;
-          background: linear-gradient(
-            135deg,
-            rgba(240, 180, 76, 0.25),
-            rgba(108, 159, 245, 0.2)
-          );
+
+          background: rgba(240, 180, 76, 0.15);
         }
 
         .nav-cta-mobile {
           display: none;
         }
 
-        /* =========================
+
+        /* =====================================================
            MOBILE MENU BUTTON
-        ========================= */
+        ===================================================== */
 
         .nav-toggle {
           display: none;
 
-          width: 42px;
-          height: 42px;
-          padding: 10px;
+          width: 40px;
+          height: 40px;
 
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          gap: 5px;
+          padding: 0;
 
-          background: transparent;
           border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 8px;
+
+          border-radius: 7px;
+
+          background: rgba(255, 255, 255, 0.03);
 
           cursor: pointer;
+
+          align-items: center;
+          justify-content: center;
+
+          flex-direction: column;
+
+          gap: 5px;
+
+          flex-shrink: 0;
+
+          transition:
+            background 0.2s ease,
+            border-color 0.2s ease;
+        }
+
+        .nav-toggle:hover {
+          background: rgba(255, 255, 255, 0.07);
+
+          border-color: rgba(255, 255, 255, 0.2);
         }
 
         .nav-toggle span {
           display: block;
-          width: 20px;
+
+          width: 19px;
           height: 2px;
+
           border-radius: 5px;
+
           background: #ffffff;
 
           transition:
             transform 0.25s ease,
-            opacity 0.25s ease;
+            opacity 0.2s ease;
         }
+
+
+        /* =====================================================
+           HAMBURGER CLOSED
+        ===================================================== */
+
+        .nav-toggle span:nth-child(1),
+        .nav-toggle span:nth-child(2),
+        .nav-toggle span:nth-child(3) {
+          transform: none;
+          opacity: 1;
+        }
+
+
+        /* =====================================================
+           HAMBURGER OPEN → X
+        ===================================================== */
 
         .nav-toggle.open span:nth-child(1) {
           transform: translateY(7px) rotate(45deg);
@@ -184,17 +271,20 @@ export default function Navbar({ active }) {
 
         .nav-toggle.open span:nth-child(2) {
           opacity: 0;
+          transform: scaleX(0);
         }
 
         .nav-toggle.open span:nth-child(3) {
           transform: translateY(-7px) rotate(-45deg);
         }
 
-        /* =========================
+
+        /* =====================================================
            TABLET
-        ========================= */
+        ===================================================== */
 
         @media (max-width: 900px) {
+
           .wrap.navbar {
             padding: 0 20px;
           }
@@ -207,69 +297,119 @@ export default function Navbar({ active }) {
             font-size: 13px;
           }
 
-          .nav-cta-desktop {
-            min-width: 90px;
+          .nav-cta {
             padding: 0 14px;
           }
         }
 
-        /* =========================
+
+        /* =====================================================
            MOBILE
-        ========================= */
+        ===================================================== */
 
         @media (max-width: 768px) {
-          nav {
-            width: 100%;
-          }
 
           .wrap.navbar {
             width: 100%;
+
             max-width: 100%;
-            height: 64px;
+
+            height: 62px;
+
             padding: 0 16px;
           }
+
+
+          /* BRAND */
 
           .brand-name {
             font-size: 16px;
           }
 
+
+          /* HAMBURGER */
+
           .nav-toggle {
             display: flex;
-            flex-shrink: 0;
+
+            z-index: 1002;
           }
 
+
+          /* MOBILE NAV MENU */
+
           .navlinks {
-            display: none;
 
             position: absolute;
-            top: 64px;
+
+            top: 62px;
+
             left: 0;
             right: 0;
 
             width: 100%;
+
+            margin: 0;
+
+            padding: 10px 16px 16px;
+
             box-sizing: border-box;
 
-            padding: 18px 16px 22px;
+            display: flex;
 
             flex-direction: column;
+
             align-items: stretch;
-            gap: 4px;
+
+            gap: 3px;
 
             background: rgba(7, 12, 22, 0.98);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+
+            /* CLOSED */
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transform: translateY(-8px);
+
+            pointer-events: none;
+
+            transition:
+              opacity 0.2s ease,
+              transform 0.2s ease,
+              visibility 0.2s ease;
           }
+
+
+          /* OPEN */
 
           .navlinks.open {
-            display: flex;
+
+            opacity: 1;
+
+            visibility: visible;
+
+            transform: translateY(0);
+
+            pointer-events: auto;
           }
 
-          .navlinks a {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 13px 12px;
 
-            border-radius: 7px;
+          /* MOBILE LINKS */
+
+          .navlinks a {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 12px;
+
+            border-radius: 6px;
 
             font-size: 14px;
           }
@@ -286,24 +426,39 @@ export default function Navbar({ active }) {
             display: none;
           }
 
+
+          /* MOBILE GET IN TOUCH */
+
+          .nav-cta-mobile {
+
+            display: flex;
+
+            width: 100%;
+
+            height: 40px;
+
+            margin-top: 7px;
+          }
+
+
+          /* HIDE DESKTOP BUTTON */
+
           .nav-cta-desktop {
             display: none;
           }
-
-          .nav-cta-mobile {
-            display: flex;
-            width: 100%;
-            margin-top: 10px;
-          }
         }
 
-        /* =========================
+
+        /* =====================================================
            SMALL MOBILE
-        ========================= */
+        ===================================================== */
 
         @media (max-width: 480px) {
+
           .wrap.navbar {
-            height: 60px;
+
+            height: 58px;
+
             padding: 0 14px;
           }
 
@@ -312,53 +467,89 @@ export default function Navbar({ active }) {
           }
 
           .nav-toggle {
-            width: 40px;
-            height: 40px;
+
+            width: 38px;
+            height: 38px;
           }
 
           .navlinks {
-            top: 60px;
+
+            top: 58px;
           }
         }
+
       `}</style>
 
+
+      {/* =====================================================
+          NAVBAR HTML
+      ===================================================== */}
+
       <nav>
+
         <div className="wrap navbar">
 
-          {/* Brand */}
+
+          {/* BRAND */}
+
           <div className="brand">
+
             <span className="brand-name">
               Upendra Bondala
             </span>
+
           </div>
 
-          {/* Mobile Menu Button */}
+
+          {/* MOBILE HAMBURGER */}
+
           <button
+            type="button"
             className={`nav-toggle ${open ? "open" : ""}`}
-            onClick={() => setOpen((prev) => !prev)}
-            aria-label="Toggle navigation"
+            onClick={toggleMenu}
+            aria-label={
+              open
+                ? "Close navigation"
+                : "Open navigation"
+            }
             aria-expanded={open}
           >
+
             <span></span>
             <span></span>
             <span></span>
+
           </button>
 
-          {/* Navigation */}
-          <div className={`navlinks ${open ? "open" : ""}`}>
+
+          {/* NAVIGATION */}
+
+          <div
+            className={`navlinks ${
+              open ? "open" : ""
+            }`}
+          >
 
             {NAV_ITEMS.map((n) => (
+
               <a
                 key={n.id}
                 href={`#${n.id}`}
-                className={active === n.id ? "active" : ""}
+                className={
+                  active === n.id
+                    ? "active"
+                    : ""
+                }
                 onClick={closeMenu}
               >
                 {n.label}
               </a>
+
             ))}
 
-            {/* Mobile Get In Touch */}
+
+            {/* MOBILE GET IN TOUCH */}
+
             <a
               href="#contact"
               className="nav-cta nav-cta-mobile"
@@ -369,7 +560,9 @@ export default function Navbar({ active }) {
 
           </div>
 
-          {/* Desktop Get In Touch */}
+
+          {/* DESKTOP GET IN TOUCH */}
+
           <a
             href="#contact"
             className="nav-cta nav-cta-desktop"
@@ -378,6 +571,7 @@ export default function Navbar({ active }) {
           </a>
 
         </div>
+
       </nav>
     </>
   );
