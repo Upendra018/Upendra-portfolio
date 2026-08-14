@@ -94,7 +94,7 @@ export default function Navbar({ active }) {
 
         <div className={`navlinks ${open ? "open" : ""}`}>
           {NAV_ITEMS.map((n) => (
-            
+            <a
               key={n.id}
               href={`#${n.id}`}
               className={active === n.id ? "active" : ""}
