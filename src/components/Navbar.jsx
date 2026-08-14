@@ -497,7 +497,3 @@ export default function Navbar({ active }) {
     </>
   );
 }
-      </nav>
-    </>
-  );
-}
