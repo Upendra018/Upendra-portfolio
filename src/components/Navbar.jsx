@@ -88,18 +88,17 @@ export default function Navbar({ active }) {
           flex-shrink: 0;
         }
 
-        .brand-name {
-          color: #ffffff;
-
-          font-size: 16px;
-          font-weight: 700;
-
-          line-height: 1;
-
-          letter-spacing: 0.1px;
-
-          white-space: nowrap;
-        }
+       .brand-name {
+        display: block !important;
+        color: #ffffff !important;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: 0.1px;
+        white-space: nowrap;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
 
         .navlinks {
           display: flex;
@@ -294,7 +293,7 @@ export default function Navbar({ active }) {
            MOBILE
         ===================================================== */
 
-        @media (max-width: 768px) {
+       @media (max-width: 768px)  {
 
           /* -----------------------------------------------
              SMALL HEADER
@@ -532,9 +531,33 @@ export default function Navbar({ active }) {
             padding-left: 10px;
             padding-right: 10px;
           }
-
+          
+           .brand {
+            display: flex !important;
+            align-items: center;
+            justify-content: flex-start;
+          
+            flex: 1;
+            min-width: 0;
+          
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+          
           .brand-name {
-            font-size: 12px;
+            display: block !important;
+          
+            color: #ffffff !important;
+          
+            font-size: 14px !important;
+            font-weight: 700 !important;
+          
+            line-height: 1;
+          
+            white-space: nowrap;
+          
+            visibility: visible !important;
+            opacity: 1 !important;
           }
 
           .nav-toggle {
@@ -572,7 +595,7 @@ export default function Navbar({ active }) {
            VERY SMALL PHONE
         ===================================================== */
 
-        @media (max-width: 360px) {
+       @media (max-width: 480px) {
 
           .wrap.navbar {
             height: 46px;
@@ -582,8 +605,8 @@ export default function Navbar({ active }) {
           }
 
           .brand-name {
-            font-size: 11px;
-          }
+            font-size: 12px !important;
+            }
 
           .nav-toggle {
             width: 28px;
@@ -616,7 +639,7 @@ export default function Navbar({ active }) {
            EXTRA SMALL PHONE
         ===================================================== */
 
-        @media (max-width: 300px) {
+        @media (max-width: 360px) {
 
           .wrap.navbar {
             height: 42px;
@@ -626,8 +649,8 @@ export default function Navbar({ active }) {
           }
 
           .brand-name {
-            font-size: 10px;
-          }
+            font-size: 11px !important;
+            }
 
           .nav-toggle {
             width: 26px;
