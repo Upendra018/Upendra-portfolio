@@ -12,7 +12,6 @@ export default function Navbar({ active }) {
     setOpen(false);
   };
 
-  /* Close menu when screen becomes desktop */
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 768) {
@@ -27,9 +26,8 @@ export default function Navbar({ active }) {
     };
   }, []);
 
-  /* Close menu when clicking outside */
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleOutsideClick = (event) => {
       if (
         open &&
         !event.target.closest(".navbar")
@@ -38,10 +36,10 @@ export default function Navbar({ active }) {
       }
     };
 
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("click", handleOutsideClick);
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("click", handleOutsideClick);
     };
   }, [open]);
 
@@ -50,8 +48,7 @@ export default function Navbar({ active }) {
       <style>{`
 
         /* =====================================================
-           DESKTOP NAVBAR
-           DO NOT CHANGE
+           DESKTOP
         ===================================================== */
 
         nav {
@@ -74,7 +71,6 @@ export default function Navbar({ active }) {
           height: 64px;
 
           margin: 0 auto;
-
           padding: 0 24px;
 
           box-sizing: border-box;
@@ -89,7 +85,6 @@ export default function Navbar({ active }) {
         .brand {
           display: flex;
           align-items: center;
-
           flex-shrink: 0;
         }
 
@@ -125,7 +120,6 @@ export default function Navbar({ active }) {
           text-decoration: none;
 
           font-size: 13px;
-
           font-weight: 500;
 
           line-height: 1;
@@ -189,23 +183,9 @@ export default function Navbar({ active }) {
           text-decoration: none;
 
           font-size: 12px;
-
           font-weight: 600;
 
           white-space: nowrap;
-
-          transition:
-            background 0.2s ease,
-            border-color 0.2s ease,
-            transform 0.2s ease;
-        }
-
-        .nav-cta:hover {
-          transform: translateY(-1px);
-
-          border-color: #f0b44c;
-
-          background: rgba(240, 180, 76, 0.14);
         }
 
         .nav-cta-mobile {
@@ -267,10 +247,13 @@ export default function Navbar({ active }) {
           transform: translateY(-6px) rotate(-45deg);
         }
 
+        .mobile-menu-header {
+          display: none;
+        }
+
 
         /* =====================================================
            TABLET
-           SAME AS BEFORE
         ===================================================== */
 
         @media (max-width: 900px) {
@@ -288,7 +271,6 @@ export default function Navbar({ active }) {
 
           .navlinks {
             gap: 18px;
-
             margin-right: 14px;
           }
 
@@ -309,18 +291,16 @@ export default function Navbar({ active }) {
 
 
         /* =====================================================
-           MOBILE ONLY
-           THIS IS THE UPDATED PART
+           MOBILE
         ===================================================== */
 
         @media (max-width: 768px) {
 
           /* -----------------------------------------------
-             SMALL NAVBAR
+             SMALL HEADER
           ------------------------------------------------ */
 
           .wrap.navbar {
-
             width: 100%;
 
             max-width: none;
@@ -329,70 +309,32 @@ export default function Navbar({ active }) {
 
             padding: 0 12px;
 
-            gap: 0;
-
-            position: relative;
+            box-sizing: border-box;
           }
 
-
-          /* -----------------------------------------------
-             NAME - LEFT CORNER
-          ------------------------------------------------ */
-
           .brand {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: flex-start;
-
             flex: 1;
-
-            min-width: 0;
           }
 
           .brand-name {
-
-            display: block;
-
-            color: #ffffff;
-
             font-size: 13px;
-
             font-weight: 600;
-
-            line-height: 1;
-
-            letter-spacing: 0;
-
-            white-space: nowrap;
-
-            overflow: hidden;
-
-            text-overflow: ellipsis;
-
-            max-width: calc(100vw - 65px);
           }
 
 
           /* -----------------------------------------------
-             HAMBURGER - RIGHT CORNER
+             HAMBURGER BUTTON
           ------------------------------------------------ */
 
           .nav-toggle {
-
             display: flex;
 
             width: 32px;
-
             height: 32px;
 
             margin-left: auto;
 
-            flex-shrink: 0;
-
-            z-index: 1002;
+            z-index: 1100;
 
             background: #0b101c;
 
@@ -402,34 +344,31 @@ export default function Navbar({ active }) {
           }
 
           .nav-toggle span {
-
             width: 15px;
-
             height: 1.5px;
-
-            background: #ffffff;
           }
 
 
-          /* -----------------------------------------------
-             MOBILE MENU
-          ------------------------------------------------ */
+          /* =================================================
+             IMPORTANT:
+             TOP-RIGHT MOBILE DROPDOWN
+          ================================================= */
 
           .navlinks {
 
             position: absolute;
 
-            top: 54px;
+            top: 62px;
 
-            left: 0;
+            right: 12px;
 
-            right: 0;
+            left: auto;
 
-            width: 100%;
+            width: 230px;
 
             margin: 0;
 
-            padding: 8px 12px 12px;
+            padding: 8px;
 
             box-sizing: border-box;
 
@@ -441,22 +380,16 @@ export default function Navbar({ active }) {
 
             gap: 2px;
 
-            /*
-             IMPORTANT:
-             Solid background so hero/content
-             behind the menu cannot be seen.
-            */
-
             background: #070c16;
 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.10);
 
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+            border-radius: 9px;
 
-            z-index: 1001;
+            box-shadow:
+              0 14px 35px rgba(0, 0, 0, 0.45);
 
-
-            /* CLOSED */
+            z-index: 1090;
 
             opacity: 0;
 
@@ -464,7 +397,7 @@ export default function Navbar({ active }) {
 
             pointer-events: none;
 
-            transform: translateY(-6px);
+            transform: translateY(-8px);
 
             transition:
               opacity 0.18s ease,
@@ -473,9 +406,7 @@ export default function Navbar({ active }) {
           }
 
 
-          /* -----------------------------------------------
-             OPEN
-          ------------------------------------------------ */
+          /* OPEN */
 
           .navlinks.open {
 
@@ -490,14 +421,42 @@ export default function Navbar({ active }) {
 
 
           /* -----------------------------------------------
-             MOBILE MENU LINKS
+             NAME INSIDE OPEN MENU
+          ------------------------------------------------ */
+
+          .mobile-menu-header {
+
+            display: flex;
+
+            align-items: center;
+
+            min-height: 42px;
+
+            padding: 0 10px;
+
+            margin-bottom: 4px;
+
+            box-sizing: border-box;
+
+            color: #ffffff;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          }
+
+
+          /* -----------------------------------------------
+             MENU LINKS
           ------------------------------------------------ */
 
           .navlinks a {
 
             width: 100%;
 
-            padding: 11px 12px;
+            padding: 10px;
 
             box-sizing: border-box;
 
@@ -506,8 +465,6 @@ export default function Navbar({ active }) {
             color: #aeb6c7;
 
             font-size: 13px;
-
-            font-weight: 500;
 
             line-height: 1.2;
           }
@@ -527,13 +484,12 @@ export default function Navbar({ active }) {
           }
 
           .navlinks a.active::after {
-
             display: none;
           }
 
 
           /* -----------------------------------------------
-             MOBILE GET IN TOUCH
+             GET IN TOUCH
           ------------------------------------------------ */
 
           .nav-cta-mobile {
@@ -542,186 +498,148 @@ export default function Navbar({ active }) {
 
             width: 100%;
 
-            height: 36px;
+            height: 35px;
 
-            margin-top: 6px;
+            margin-top: 5px;
 
             align-items: center;
-
             justify-content: center;
+
+            font-size: 12px !important;
 
             color: #f0b44c !important;
 
             border: 1px solid rgba(240, 180, 76, 0.35);
 
-            background: rgba(240, 180, 76, 0.03);
-
-            font-size: 12px !important;
+            background: rgba(240, 180, 76, 0.04);
           }
 
-
-          /* -----------------------------------------------
-             HIDE DESKTOP BUTTON
-          ------------------------------------------------ */
-
           .nav-cta-desktop {
-
             display: none;
           }
         }
 
 
         /* =====================================================
-           SMALL MOBILE
+           SMALL PHONE
         ===================================================== */
 
         @media (max-width: 480px) {
 
           .wrap.navbar {
-
             height: 50px;
 
             padding-left: 10px;
-
             padding-right: 10px;
           }
 
           .brand-name {
-
             font-size: 12px;
-
-            font-weight: 600;
           }
 
           .nav-toggle {
-
             width: 30px;
-
             height: 30px;
           }
 
           .nav-toggle span {
-
             width: 14px;
-
-            height: 1.5px;
           }
 
           .navlinks {
+            top: 57px;
 
-            top: 50px;
+            right: 10px;
 
-            padding: 7px 10px 10px;
+            width: 215px;
           }
 
-          .navlinks a {
-
-            padding: 9px 10px;
+          .mobile-menu-header {
+            min-height: 40px;
 
             font-size: 12px;
           }
 
-          .nav-cta-mobile {
+          .navlinks a {
+            padding: 9px;
 
-            height: 34px;
-
-            font-size: 11px !important;
+            font-size: 12px;
           }
         }
 
 
         /* =====================================================
-           VERY SMALL MOBILE
+           VERY SMALL PHONE
         ===================================================== */
 
         @media (max-width: 360px) {
 
           .wrap.navbar {
-
             height: 46px;
 
             padding-left: 8px;
-
             padding-right: 8px;
           }
 
           .brand-name {
-
             font-size: 11px;
           }
 
           .nav-toggle {
-
             width: 28px;
-
             height: 28px;
           }
 
-          .nav-toggle span {
-
-            width: 13px;
-          }
-
           .navlinks {
+            top: 52px;
 
-            top: 46px;
+            right: 8px;
 
-            padding: 6px 8px 8px;
+            width: 200px;
           }
 
-          .navlinks a {
-
-            padding: 8px;
+          .mobile-menu-header {
+            min-height: 38px;
 
             font-size: 11px;
           }
 
-          .nav-cta-mobile {
+          .navlinks a {
+            padding: 8px;
 
-            height: 32px;
-
-            font-size: 10px !important;
+            font-size: 11px;
           }
         }
 
 
         /* =====================================================
-           EXTRA SMALL
+           EXTRA SMALL PHONE
         ===================================================== */
 
         @media (max-width: 300px) {
 
           .wrap.navbar {
-
             height: 42px;
 
             padding-left: 7px;
-
             padding-right: 7px;
           }
 
           .brand-name {
-
             font-size: 10px;
           }
 
           .nav-toggle {
-
             width: 26px;
-
             height: 26px;
           }
 
-          .nav-toggle span {
-
-            width: 12px;
-
-            height: 1px;
-          }
-
           .navlinks {
+            top: 48px;
 
-            top: 42px;
+            right: 7px;
+
+            width: 185px;
           }
         }
 
@@ -736,7 +654,7 @@ export default function Navbar({ active }) {
 
         <div className="wrap navbar">
 
-          {/* NAME - LEFT */}
+          {/* BRAND */}
           <div className="brand">
 
             <span className="brand-name">
@@ -746,7 +664,7 @@ export default function Navbar({ active }) {
           </div>
 
 
-          {/* HAMBURGER - RIGHT */}
+          {/* MENU BUTTON */}
           <button
             type="button"
             className={`nav-toggle ${open ? "open" : ""}`}
@@ -766,13 +684,20 @@ export default function Navbar({ active }) {
           </button>
 
 
-          {/* MOBILE / DESKTOP NAVIGATION */}
+          {/* NAV MENU */}
           <div
             className={`navlinks ${
               open ? "open" : ""
             }`}
           >
 
+            {/* NAME INSIDE OPEN BUTTON MENU */}
+            <div className="mobile-menu-header">
+              Upendra Bondala
+            </div>
+
+
+            {/* NAV ITEMS */}
             {NAV_ITEMS.map((n) => (
 
               <a
@@ -792,7 +717,6 @@ export default function Navbar({ active }) {
 
 
             {/* MOBILE GET IN TOUCH */}
-
             <a
               href="#contact"
               className="nav-cta nav-cta-mobile"
@@ -805,7 +729,6 @@ export default function Navbar({ active }) {
 
 
           {/* DESKTOP GET IN TOUCH */}
-
           <a
             href="#contact"
             className="nav-cta nav-cta-desktop"
